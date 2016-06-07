@@ -1,3 +1,10 @@
+body
+{
+	background-color: #6495ED;
+	color : white;
+	font-family: Impact, Charcoal, sans-serif;
+}
+
 canvas 
 {
 	display: none;
@@ -25,10 +32,13 @@ canvas
 	vertical-align: middle;
 	line-height: 100px;  
 	background-color: #ADD8E6;
-	font-family: Impact, Charcoal, sans-serif;
+	font-size: 25px;
+	text-shadow: 2px 2px 5px #000;
+	box-shadow: 2px 2px 5px #000;
 }
 
 #upload:hover 
 {
 	background-color: #6495ED;
+	box-shadow: 0px 0px #000;
 }

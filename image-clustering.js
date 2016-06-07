@@ -1,6 +1,6 @@
 var pixels, clusters, canvas, context;
 
-var openFile = function(event) {
+var openFile = function(event, numOfClusters) {
 	var input = event.target;
 	var reader = new FileReader();
 	reader.onload = function(event){
@@ -22,7 +22,7 @@ var openFile = function(event) {
 			
 			var imgData = context.getImageData(0,0,canvas.width, canvas.height);
 			
-			clusters = new Array(512);
+			clusters = new Array(numOfClusters);
 			pixels = new Array(imgData.data.length/4);
 			
 			for (var i=0;i<imgData.data.length;i+=4)
