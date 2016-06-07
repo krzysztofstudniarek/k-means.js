@@ -5,9 +5,14 @@ $(document).ready(function(){
 	var elems;
 	var clusters;
 	
-	init(100, 5);
-	update();
-	drawScene();
+	init(5000, 100);
+	setInterval(loop, 250);
+	
+	function loop(){
+			update();
+			drawScene();
+	}
+
 	
 	function init(numOfElements, numOfClusters){
 		
@@ -68,16 +73,16 @@ $(document).ready(function(){
 				}
 			}
 		}
-
 	}
 	
 	function drawScene(){
+		context.clearRect(0, 0, canvas.width, canvas.height);
 		for(var i = 0; i<elems.length; i++){
-			drawPoint(elems[i]);
+			drawPoint(elems[i], false);
 		}
 		
 		for(var i = 0; i<clusters.length; i++){
-			drawPoint(clusters[i]);
+			drawPoint(clusters[i], true);
 		}
 	}
 	
@@ -86,13 +91,28 @@ $(document).ready(function(){
 		return d;
 	}
 	
-	function drawPoint(point){
-		context.beginPath();
-		context.arc(point.x,point.y,5,0,2*Math.PI);
-		context.lineWidth = 0;
-		context.fillStyle = point.color;
-		context.fill();
-		//context.stroke();
+	function drawPoint(point, isCluster){
+		if(!isCluster){
+			context.beginPath();
+			context.arc(point.x,point.y,3,0,2*Math.PI);
+			context.lineWidth = 0;
+			context.fillStyle = point.color;
+			context.fill();
+		}else{
+			context.beginPath();
+			context.arc(point.x,point.y,4,0,2*Math.PI);
+			context.lineWidth = 0;
+			context.fillStyle = "red";
+			context.fill();
+			context.closePath();
+			context.beginPath();
+			context.arc(point.x,point.y,3,0,2*Math.PI);
+			context.lineWidth = 0;
+			context.fillStyle = point.color;
+			context.fill();
+			context.closePath();
+
+		}//context.stroke();
 	}
 	
 	function getRandomColor() {
