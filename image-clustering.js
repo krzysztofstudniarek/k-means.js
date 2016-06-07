@@ -4,21 +4,25 @@ var openFile = function(event) {
 	var input = event.target;
 	var reader = new FileReader();
 	reader.onload = function(event){
+		
 		var img = new Image();
 		
 		canvas = document.getElementById("cluster");
 		context = canvas.getContext("2d");
 		
-		
+		document.getElementById('cluster').style.display = 'inline-block';
+		document.getElementById('upload').style.display = 'none';
 		
 		img.onload = function(){
 			canvas.width = img.width;
 			canvas.height = img.height;
+			document.getElementById('cluster').style.marginTop = -canvas.height/2;
+			document.getElementById('cluster').style.marginLeft = -canvas.width/2;
 			context.drawImage(img,0,0);
 			
 			var imgData = context.getImageData(0,0,canvas.width, canvas.height);
 			
-			clusters = new Array(32);
+			clusters = new Array(512);
 			pixels = new Array(imgData.data.length/4);
 			
 			for (var i=0;i<imgData.data.length;i+=4)
@@ -66,10 +70,10 @@ var loop = function(){
 
 function update(){
 	for(var i = 0; i<clusters.length; i++){
-		var meanRed = clusters[i].red;
-		var meanGreen = clusters[i].green;
-		var meanBlue = clusters[i].blue;
-		for(var j = 0; j<pixels.length; j++){
+		var meanRed = pixels[0].red;
+		var meanGreen = pixels[0].green;
+		var meanBlue = pixels[0].blue;
+		for(var j = 1; j<pixels.length; j++){
 			if(pixels[j].cluster == clusters[i]){
 				meanRed = (meanRed + pixels[j].red)/2;
 				meanGreen = (meanGreen + pixels[j].green)/2;
