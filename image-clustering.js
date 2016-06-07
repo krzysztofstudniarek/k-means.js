@@ -87,9 +87,10 @@ function update(){
 	
 	for(var i = 0; i<pixels.length; i++){
 		var minDist = calculateDistance(pixels[i], clusters[0]);
+		pixels[i].cluster = clusters[0];
 		for(var j = 0; j<clusters.length; j++){
 			var dist = calculateDistance(pixels[i], clusters[j]);
-			if(dist <= minDist){
+			if(dist < minDist){
 				pixels[i].cluster = clusters[j];
 				minDist = dist;
 			}
