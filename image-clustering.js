@@ -1,60 +1,25 @@
-var pixels, clusters, canvas, context;
+var pixels, clusters, canvas, context, img;
 
-var openFile = function(event, numOfClusters) {
+var openFile = function(event) {
 	var input = event.target;
 	var reader = new FileReader();
 	reader.onload = function(event){
 		
-		var img = new Image();
+		img = new Image();
 		
 		canvas = document.getElementById("cluster");
 		context = canvas.getContext("2d");
 		
-		document.getElementById('cluster').style.display = 'inline-block';
-		document.getElementById('upload').style.display = 'none';
-		
 		img.onload = function(){
-			canvas.width = img.width;
-			canvas.height = img.height;
-			document.getElementById('cluster').style.marginTop = -canvas.height/2;
-			document.getElementById('cluster').style.marginLeft = -canvas.width/2;
-			context.drawImage(img,0,0);
-			
-			var imgData = context.getImageData(0,0,canvas.width, canvas.height);
-			
-			clusters = new Array(numOfClusters);
-			pixels = new Array(imgData.data.length/4);
-			
-			for (var i=0;i<imgData.data.length;i+=4)
-			{
-				pixels[i/4] = {
-					red : imgData.data[i],
-					green : imgData.data[i+1],
-					blue : imgData.data[i+2],
-					cluster : undefined
-				}
+			if(img.width <= 500 && img.height <=500){
+				document.getElementById('upload').style.display = 'none';
+				document.body.style.backgroundColor = '#FFFF61';
+				document.getElementById('col16').style.display = 'inline-block';
+				document.getElementById('col32').style.display = 'inline-block';
+				document.getElementById('col64').style.display = 'inline-block';
+			}else{
+				alert("Image width and height has to be smaller than 500px");
 			}
-			
-			for(var i =0;i<clusters.length; i++){
-				clusters[i] = {
-					red : Math.random()*255,
-					green : Math.random()*255,
-					blue : Math.random()*255
-				}
-			}
-			
-			for (var i =0; i<pixels.length; i++){
-				var minDist = calculateDistance(pixels[i], clusters[0]);
-				pixels[i].cluster = clusters[0];
-				for(var j = 0; j<clusters.length; j++){
-					if(calculateDistance(pixels[i], clusters[j])<minDist){
-						minDist = calculateDistance(pixels[i], clusters[j]);
-						pixels[i].cluster = clusters[j];
-					}
-				}
-			}
-			
-			setInterval(loop, 250);
 		}
 		
 		img.src = event.target.result;
@@ -66,6 +31,54 @@ var openFile = function(event, numOfClusters) {
 var loop = function(){
 	update();
 	drawScene();
+}
+
+function init(numOfClusters){
+	document.getElementById('col16').style.display = 'none';
+	document.getElementById('col32').style.display = 'none';
+	document.getElementById('col64').style.display = 'none';
+	document.getElementById('cluster').style.display = 'inline-block';
+	canvas.width = img.width;
+	canvas.height = img.height;
+	document.getElementById('cluster').style.marginTop = -canvas.height/2;
+	document.getElementById('cluster').style.marginLeft = -canvas.width/2;
+	context.drawImage(img,0,0);
+	
+	imgData = context.getImageData(0,0,canvas.width, canvas.height);
+	
+	clusters = new Array(numOfClusters);
+	pixels = new Array(imgData.data.length/4);
+	
+	for (var i=0;i<imgData.data.length;i+=4)
+	{
+		pixels[i/4] = {
+			red : imgData.data[i],
+			green : imgData.data[i+1],
+			blue : imgData.data[i+2],
+			cluster : undefined
+		}
+	}
+	
+	for(var i =0;i<clusters.length; i++){
+		clusters[i] = {
+			red : Math.random()*255,
+			green : Math.random()*255,
+			blue : Math.random()*255
+		}
+	}
+	
+	for (var i =0; i<pixels.length; i++){
+		var minDist = calculateDistance(pixels[i], clusters[0]);
+		pixels[i].cluster = clusters[0];
+		for(var j = 0; j<clusters.length; j++){
+			if(calculateDistance(pixels[i], clusters[j])<minDist){
+				minDist = calculateDistance(pixels[i], clusters[j]);
+				pixels[i].cluster = clusters[j];
+			}
+		}
+	}
+	
+	setInterval(loop, 250);
 }
 
 function update(){

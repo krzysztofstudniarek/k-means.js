@@ -5,12 +5,23 @@
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
+	<p>Image Color Clusterization</p>
 	<canvas id="cluster" width="600" height="400">Your browser does not support the HTML5 canvas tag.</canvas>
 	<label for="file-input">
 		<div id="upload">
 			CHOOSE IMAGE
 		</div>
 	</label>
-	<input id="file-input" type='file' onchange='openFile(event, 256)'/>
+	<input id="file-input" type='file' onchange='openFile(event)'/>
+	
+	<div id="col16" onclick='init(16)'>
+		16 COLORS
+	</div>
+	<div id="col32" onclick='init(32)'>
+		32 COLORS
+	</div>
+	<div id="col64" onclick='init(64)'>
+		64 COLORS
+	</div>
 </body>
 </html>
